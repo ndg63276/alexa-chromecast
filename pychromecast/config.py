@@ -2,8 +2,11 @@
 Data and methods to retrieve app specific configuration
 """
 import json
-
-from botocore.vendored import requests
+from os import environ
+if 'AWS_REGION' in environ:
+    from botocore.vendored import requests
+else:
+    import requests
 
 APP_BACKDROP = "E8C28D3C"
 APP_YOUTUBE = "233637DE"

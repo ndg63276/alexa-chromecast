@@ -3,12 +3,17 @@ Implements the DIAL-protocol to communicate with the Chromecast
 """
 from collections import namedtuple
 from uuid import UUID
-
-from botocore.vendored import requests
+from os import environ
+if 'AWS_REGION' in environ:
+    from botocore.vendored import requests
+    port_no = int(environ['MY_PORT_NUMBER']) - 1
+else:
+    import requests
+    port_no = 8008
 
 XML_NS_UPNP_DEVICE = "{urn:schemas-upnp-org:device-1-0}"
 
-FORMAT_BASE_URL = "http://{}:8008"
+FORMAT_BASE_URL = "http://{}:"+str(port_no)
 
 CC_SESSION = requests.Session()
 CC_SESSION.headers['content-type'] = 'application/json'

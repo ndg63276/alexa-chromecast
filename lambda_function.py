@@ -32,8 +32,8 @@ appliances = [
 
 def lambda_handler(request, context):
     try:
-        logger.info("Directive:")
-        logger.info(json.dumps(request, indent=4, sort_keys=True))
+        logger.info("Request:")
+        logger.info(request)
 
         if request["directive"]["header"]["name"] == "Discover":
             response = handle_discovery(request)
@@ -41,7 +41,7 @@ def lambda_handler(request, context):
             response = handle_non_discovery(request)
 
         logger.info("Response:")
-        logger.info(json.dumps(response, indent=4, sort_keys=True))
+        logger.info(response)
 
         return response
     except ValueError as error:
@@ -86,9 +86,10 @@ def handle_non_discovery(request):
         if request_name == "TurnOn":
             value = "ON"
             ip_address = environ['MY_IP_ADDRESS']
-            c = pychromecast.Chromecast(ip_address)
+            port_no = int(environ['MY_PORT_NUMBER'])
+            c = pychromecast.Chromecast(ip_address, port_no)
             CAST_SPLASH = 'https://home-assistant.io/images/cast/splash.png'
-            c.play_media(CAST_SPLASH, pychromecast.STREAM_TYPE_BUFFERED)
+            c.play_media(CAST_SPLASH, 'image/png')
         else:
             value = "OFF"
         properties = [ {
