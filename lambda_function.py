@@ -6,15 +6,10 @@ import json
 import uuid
 import socket
 from os import environ
-from botocore.vendored import requests
+import pychromecast
 # Setup logger
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-try:
-    chromecast_name = environ['CHROMECAST_NAME']
-except:
-    chromecast_name = 'Living Room'
-
 
 appliances = [
     {
@@ -22,7 +17,7 @@ appliances = [
         "manufacturerName": "Google",
         "modelName": "Chromecast",
         "version": "1",
-        "friendlyName": chromecast_name,
+        "friendlyName": "Toshiba TV",
         "description": "Toshiba TV",
         "isReachable": True,
         "displayCategories":["TV"],
@@ -90,6 +85,10 @@ def handle_non_discovery(request):
         response_name = "powerState"
         if request_name == "TurnOn":
             value = "ON"
+            ip_address = environ['MY_IP_ADDRESS']
+            c = pychromecast.Chromecast(ip_address)
+            CAST_SPLASH = 'https://home-assistant.io/images/cast/splash.png'
+            c.play_media(CAST_SPLASH, pychromecast.STREAM_TYPE_BUFFERED)
         else:
             value = "OFF"
         properties = [ {
