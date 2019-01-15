@@ -17,8 +17,8 @@ appliances = [
         "manufacturerName": "Google",
         "modelName": "Chromecast",
         "version": "1",
-        "friendlyName": "Toshiba TV",
-        "description": "Toshiba TV",
+        "friendlyName": "Chromecast",
+        "description": "Chromecast",
         "isReachable": True,
         "displayCategories":["TV"],
         "actions": [
@@ -85,11 +85,14 @@ def handle_non_discovery(request):
         response_name = "powerState"
         if request_name == "TurnOn":
             value = "ON"
-            ip_address = environ['MY_IP_ADDRESS']
+            ip_address = socket.gethostbyname(environ['MY_IP_ADDRESS'])
             port_no = int(environ['MY_PORT_NUMBER'])
             c = pychromecast.Chromecast(ip_address, port_no)
-            CAST_SPLASH = 'https://home-assistant.io/images/cast/splash.png'
-            c.play_media(CAST_SPLASH, 'image/png')
+            c.quit_app()
+            time.sleep(0.1)
+            c.start_app('233637DE')
+            time.sleep(0.1)
+            c.quit_app()
         else:
             value = "OFF"
         properties = [ {
