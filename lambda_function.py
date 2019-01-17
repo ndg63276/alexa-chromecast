@@ -11,6 +11,12 @@ import pychromecast
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+ip_address = socket.gethostbyname(environ['MY_IP_ADDRESS'])
+port_no = int(environ['MY_PORT_NUMBER'])
+c = pychromecast.Chromecast(ip_address, port_no)
+mc = c.media_controller
+
+
 appliances = [
     {
         "applianceId": "chromecast-001",
@@ -85,9 +91,6 @@ def handle_non_discovery(request):
         response_name = "powerState"
         if request_name == "TurnOn":
             value = "ON"
-            ip_address = socket.gethostbyname(environ['MY_IP_ADDRESS'])
-            port_no = int(environ['MY_PORT_NUMBER'])
-            c = pychromecast.Chromecast(ip_address, port_no)
             c.quit_app()
             time.sleep(0.1)
             c.start_app('233637DE')
@@ -102,6 +105,20 @@ def handle_non_discovery(request):
             "timeOfSample": get_utc_timestamp(),
             "uncertaintyInMilliseconds": 500
         } ]
+
+    elif request_namespace == "Alexa.PlaybackController":
+        if request_name == "Play":
+            logger.info('Sending play')
+            mc = c.media_controller
+            mc.play()
+        elif request_name == "Pause":
+            mc.pause()
+        elif request_name == "FastForward":
+            pass
+        elif request_name == "Rewind":
+            pass
+        elif request_name == "Stop":
+            c.quit_app()
     return make_response(request, properties, namespace, name)
 
 def make_response(request, properties, namespace, name):       
@@ -162,6 +179,13 @@ def get_capabilities(appliance):
                     "proactivelyReported": False,
                     "retrievable": False
                 }
+            },
+            {  
+                     "type":"AlexaInterface",
+                     "interface":"Alexa.PlaybackController",
+                     "version":"1.0",
+                     "properties":{ },
+                     "supportedOperations" : ["Play", "Pause", "Rewind", "FastForward", "Stop"] 
             }
         ]
 
@@ -186,3 +210,4 @@ def get_capabilities(appliance):
     capabilities.append(endpoint_health_capability)
     capabilities.append(alexa_interface_capability)
     return capabilities
+
