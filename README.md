@@ -70,7 +70,7 @@ amzn1.ask.skill.bacf6378-76b7-8734-bcd5-23f456abcdef
 |Key           | Value|
 |--------------| -----|
 |MY_IP_ADDRESS |(Put your Dynamic DNS address here, eg this_is_my_static_ip_1235.ddns.net)|
-|MY_PORT_NUMBER|(Put the port you forwarded in here, eg 51111)|
+|MY_PORT_NUMBER|(Put the larger of the two port numbers you forwarded here, eg 51119)|
 
 
 16. Click "Save" in the top right. This will upload the lambda_function.zip file to Lambda. This may take a few minutes depending on your connection speed.
