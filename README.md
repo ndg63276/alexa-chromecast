@@ -11,7 +11,7 @@ For me, turning on the Chromecast turns on the TV. So I have made a group with t
 ### Set up your router to allow access to the Chromecast IP address
 1. This section will open your internet connection slightly. It is pretty harmless, but I am not responsible for anything bad that happens because of it.
 2. Find the IP of your Chromecast. If you don't know it, open the Google Home app on your phone, then press on the Chromecast you want to use. Then press the Settings cog at the top right to go into Device Settings. Scroll down to the bottom, it will say the IP address, eg 192.168.1.15
-3. Forward 2 consecutive TCP porta (eg 51118-51119) to ports 8008-8009 on this IP address.
+3. Forward 2 consecutive TCP ports (eg 51118-51119) to ports 8008-8009 on this IP address.
 How to do this depends heavily on your router. The best thing to do is to go to https://portforward.com/router.htm, ignore the popups to use their Network Utilities software, find your router in the list and follow the instructions there.
 4. Fix your Chromecast's local IP address.
 While you are on your router's setup pages, you want to make sure your Chromecast always gets the same address on your local network, otherwise the port forwarding might stop working. How to do this again depends on your router. On a BT Home Hub 5, go to Advanced Settings, Home Network, click on the device with the Chromecast's IP address, and select 'Yes' to 'Always use this IP address'. On some routers, it may be under 'Address reservation'.
